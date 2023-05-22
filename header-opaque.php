@@ -1,4 +1,4 @@
-    <header class="s-header s-header-opaque">
+    <header class="s-header s-header--opaque">
         <div class="s-header__logo">
             <a class="logo" href="index.php">
                 <img src="assets/images/logo.svg" alt="Homepage">
