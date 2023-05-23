@@ -1,0 +1,21 @@
+## Create Database
+CREATE DATABASE db_name;
+
+## Grant Permissions
+GRANT ALL PRIVILEGES ON db_name.* TO 'username'@'localhost';
+FLUSH PRIVILEGES;
+
+## Use Database
+USE db_name;
+
+## Create Posts Table
+CREATE TABLE posts(post_id INT(11) AUTO_INCREMENT PRIMARY KEY, category_id INT(11), post_title VARCHAR(75), post_meta_title VARCHAR(100), post_url VARCHAR(100), post_summary TEXT, post_content LONGTEXT, main_image_url VARCHAR(255), alt_image_url VARCHAR(255), post_view INT(11), post_placement INT(1), post_status INT(1), date_created DATE, time_created TIME, date_updated DATE, time_updated TIME );
+
+## Create Categories Table
+CREATE TABLE categories(category_id INT(11) AUTO_INCREMENT PRIMARY KEY, category_title VARCHAR(75), category_meta_title VARCHAR(100), category_url VARCHAR(100), date_created DATE, time_created TIME);
+
+## Create Tags Table
+CREATE TABLE tags(tag_id INT(11) AUTO_INCREMENT PRIMARY KEY, post_id INT(11), tag VARCHAR(50));
+
+## Create Comments Table
+CREATE TABLE comments(comment_id INT(11) AUTO_INCREMENT PRIMARY KEY, comment_parent_id INT(11), post_id INT(11), comment_author VARCHAR(75), comment_author_email VARCHAR(75), comment VARCHAR(500), date_created DATE, time_created TIME);
