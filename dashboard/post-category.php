@@ -34,11 +34,11 @@
                     </div>
                 </div>
                 <?php
-                    if(isset($_REQUEST['add-category'])) {
-                        if($_REQUEST['add-category'] == "success") {
+                    if(isset($_REQUEST['status'])) {
+                        if($_REQUEST['status'] == "success") {
                             echo "<div class='alert alert-success'><strong>Success!</strong> Category added.</div>";
                         }
-                        else if($_REQUEST['add-category'] == "error") {
+                        else if($_REQUEST['status'] == "error") {
                             echo "<div class='alert alert-danger'><strong>Error!</strong> Category was not added, there was an unexpected error.</div>";
                         }
                     }
@@ -52,8 +52,8 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form role="form" method="POST">
-                                            <div class="form-group" action="includes/add-category.php">
+                                        <form role="form" method="POST" action="includes/add-category.php">
+                                            <div class="form-group">
                                                 <label>Name</label>
                                                 <input class="form-control" name="category-title">
                                             </div>
