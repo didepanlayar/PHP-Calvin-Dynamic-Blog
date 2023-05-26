@@ -42,6 +42,22 @@
                             echo "<div class='alert alert-danger'><strong>Error!</strong> Category was not added, there was an unexpected error.</div>";
                         }
                     }
+                    else if(isset($_REQUEST['change'])) {
+                        if($_REQUEST['change'] == "success") {
+                            echo "<div class='alert alert-success'><strong>Success!</strong> Changes to the category were saved.</div>";
+                        }
+                        else if($_REQUEST['change'] == "error") {
+                            echo "<div class='alert alert-danger'><strong>Error!</strong> Changes to the category were not saved.</div>";
+                        }
+                    }
+                    else if(isset($_REQUEST['remove'])) {
+                        if($_REQUEST['remove'] == "success") {
+                            echo "<div class='alert alert-success'><strong>Success!</strong> Category deleted.</div>";
+                        }
+                        else if($_REQUEST['remove'] == "error") {
+                            echo "<div class='alert alert-danger'><strong>Error!</strong> Category not deleted.</div>";
+                        }
+                    }
                 ?>
                 <div class="row">
                     <div class="col-lg-12">
@@ -84,7 +100,7 @@
                                                 <th>Name</th>
                                                 <th>Meta Title</th>
                                                 <th>Slug</th>
-                                                <th>Action</th>
+                                                <th><center>Action</center></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -103,10 +119,63 @@
                                                         <td><?php echo $metaTitle; ?></td>
                                                         <td><?php echo $slug; ?></td>
                                                         <td>
-                                                            <button>View</button>
-                                                            <button>Edit</button>
-                                                            <button>Delete</button>
+                                                            <center>
+                                                                <button class="popup-button" onclick="window.open('../category.php?group=<?php echo $slug; ?>', '_blank');">View</button>
+                                                                <button class="popup-button" data-toggle="modal" data-target="#edit-<?php echo $id; ?>">Edit</button>
+                                                                <button class="popup-button" data-toggle="modal" data-target="#delete-<?php echo $id; ?>">Delete</button>
+                                                            </center>
                                                         </td>
+                                                        <div class="modal fade" id="edit-<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <form method="POST" action="includes/edit-category.php">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                            <h4 class="modal-title" id="myModalLabel">Edit Category</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <input type="hidden" name="category-id" value="<?php echo $id; ?>">
+                                                                            <div class="form-group">
+                                                                                <label>Name</label>
+                                                                                <input class="form-control" name="edit-category-title" value="<?php echo $title; ?>">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Meta Title</label>
+                                                                                <input class="form-control" name="edit-category-meta-title" value="<?php echo $metaTitle; ?>">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Slug</label>
+                                                                                <input class="form-control" name="edit-category-slug" value="<?php echo $slug; ?>">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary" name="edit-category-button">Save</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal fade" id="delete-<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <form method="POST" action="includes/delete-category.php">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                            <h4 class="modal-title" id="myModalLabel">Delete Category</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <input type="hidden" name="category-id" value="<?php echo $id; ?>">
+                                                                            <p>Are you sure that you want to delete this category?</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-danger" name="delete-category-button">Delete</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </tr>
                                             <?php
                                                 }
