@@ -1,3 +1,6 @@
+<?php
+    require "includes/config.php";
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -34,96 +37,72 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form role="form">
+                                        <form role="form" method="POST" action="includes/add-post.php" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label>Title</label>
-                                                <input class="form-control">
+                                                <input class="form-control" name="post-title">
                                             </div>
                                             <div class="form-group">
                                                 <label>Meta Title</label>
-                                                <input class="form-control">
+                                                <input class="form-control" name="post-meta-title">
                                             </div>
                                             <div class="form-group">
                                                 <label>Category</label>
-                                                <select class="form-control">
-                                                    <option>1</option>
+                                                <select class="form-control" name="post-category">
+                                                    <option>Select Category</option>
+                                                    <?php
+                                                        $sqlCategories = "SELECT * FROM categories";
+                                                        $queryCategories = mysqli_query($connect, $sqlCategories);
+                                                        while($rowCategories = mysqli_fetch_assoc($queryCategories)) {
+                                                            $cId = $rowCategories['category_id'];
+                                                            $cName = $rowCategories['category_title'];
+                                                            echo "<option value='" . $cId . "'>" . $cName . "</option>";
+                                                        }
+                                                    ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Main Image</label>
-                                                <input type="file">
+                                                <input type="file" name="post-main-image">
                                             </div>
                                             <div class="form-group">
                                                 <label>Alternate Image</label>
-                                                <input type="file">
+                                                <input type="file" name="post-alt-image">
                                             </div>
                                             <div class="form-group">
                                                 <label>Summary</label>
-                                                <textarea class="form-control" rows="3"></textarea>
+                                                <textarea class="form-control" rows="3" name="post-summary"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Content</label>
-                                                <textarea class="form-control" rows="3"></textarea>
+                                                <textarea class="form-control" rows="3" name="post-content"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Tags</label>
-                                                <input class="form-control">
+                                                <input class="form-control" name="post-tags">
                                             </div>
                                             <div class="form-group">
                                                 <label>Slug</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">www.domain.com/</span>
-                                                    <input type="text" class="form-control" placeholder="Slug">
+                                                    <input type="text" class="form-control" placeholder="Slug" name="post-slug">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Home Placement</label>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked="">1
+                                                    <input type="radio" name="post-home-placement" id="optionsRadiosInline1" value="1" checked="">1
                                                 </label>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">2
+                                                    <input type="radio" name="post-home-placement" id="optionsRadiosInline2" value="2">2
                                                 </label>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">3
+                                                    <input type="radio" name="post-home-placement" id="optionsRadiosInline3" value="3">3
                                                 </label>
                                             </div>
-                                            <button type="submit" class="btn btn-default">Add Post</button>
+                                            <button type="submit" class="btn btn-default" name="submit-post">Add Post</button>
                                         </form>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                All Categories
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Meta Title</th>
-                                                <th>Slug</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <button>View</button>
-                                                    <button>Edit</button>
-                                                    <button>Delete</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
