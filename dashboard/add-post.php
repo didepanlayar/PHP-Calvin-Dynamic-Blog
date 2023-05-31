@@ -37,7 +37,7 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form role="form" method="POST" action="includes/add-post.php" enctype="multipart/form-data">
+                                        <form role="form" method="POST" action="includes/add-post.php" enctype="multipart/form-data" onsubmit="return validateImage();">
                                             <div class="form-group">
                                                 <label>Title</label>
                                                 <input class="form-control" name="post-title">
@@ -63,11 +63,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Main Image</label>
-                                                <input type="file" name="post-main-image">
+                                                <input type="file" name="post-main-image" id="post-main-image">
                                             </div>
                                             <div class="form-group">
                                                 <label>Alternate Image</label>
-                                                <input type="file" name="post-alt-image">
+                                                <input type="file" name="post-alt-image" id="post-alt-image">
                                             </div>
                                             <div class="form-group">
                                                 <label>Summary</label>
@@ -113,10 +113,56 @@
         </div>
     </div>
     <script src="assets/js/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/jquery.metisMenu.js"></script>
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
     <script src="assets/js/custom-scripts.js"></script>
+    <script>
+        function validateImage() {
+            var mainImage = $("#post-main-image").val();
+            var altImage = $("#post-alt-image").val();
+            var extention = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+            var getExtMainImage = mainImage.split('.');
+            var getExtAltImage = altImage.split('.');
+            getExtMainImage = getExtMainImage.reverse();
+            getExtAltImage = getExtAltImage.reverse();
+            mainImageCheck = false;
+            altImageCheck = false;
+            if(mainImage.length > 0) {
+                if($.inArray(getExtMainImage[0].toLowerCase(), extention) >= -1) {
+                    mainImageCheck = true;
+                }
+                else {
+                    alert("Error! Main Image. Upload only JPG, JPEG, PNG, GIF and BMP images.");
+                    mainImageCheck = false;
+                }
+            }
+            else {
+                alert("Please upload a Main Image.");
+                mainImageCheck = false;
+            }
+            if(altImage.length > 0) {
+                if($.inArray(getExtAltImage[0].toLowerCase(), extention) >= -1) {
+                    altImageCheck = true;
+                }
+                else {
+                    alert("Error! Alternate Image. Upload only JPG, JPEG, PNG, GIF and BMP images.");
+                    altImageCheck = false;
+                }
+            }
+            else {
+                alert("Please upload a Alternate Image.");
+                altImageCheck = false;
+            }
+            if(mainImageCheck == true && altImageCheck == true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>
