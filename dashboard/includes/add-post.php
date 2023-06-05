@@ -1,5 +1,6 @@
 <?php
     require "config.php";
+    session_start();
 
     if(isset($_POST['submit-post'])) {
         $title = $_POST['post-title'];
@@ -66,6 +67,14 @@
         $sqlAddPost = "INSERT INTO posts (category_id, post_title, post_meta_title, post_url, post_summary, post_content, main_image_url, alt_image_url, post_placement, post_status, date_created, time_created) VALUES ('$category', '$title', '$metaTitle', '$slug', '$summary', '$content', '$mainImgUrl', '$altImgUrl', '$homePlacement', '1', '$date', '$time')";
         if(mysqli_query($connect, $sqlAddPost)) {
             mysqli_close($connect);
+            unset($_SESSION['title']);
+            unset($_SESSION['metaTitle']);
+            unset($_SESSION['category']);
+            unset($_SESSION['summary']);
+            unset($_SESSION['content']);
+            unset($_SESSION['tags']);
+            unset($_SESSION['slug']);
+            unset($_SESSION['placement']);
             header("Location: ../posts.php?status=success");
             exit();
         }
@@ -79,6 +88,16 @@
     }
 
     function formError($errorCode) {
+        require "config.php";
+        $_SESSION['title'] = $_POST['post-title'];
+        $_SESSION['metaTitle'] = $_POST['post-meta-title'];
+        $_SESSION['category'] = $_POST['post-category'];
+        $_SESSION['summary'] = $_POST['post-summary'];
+        $_SESSION['content'] = $_POST['post-content'];
+        $_SESSION['tags'] = $_POST['post-tags'];
+        $_SESSION['slug'] = $_POST['post-slug'];
+        $_SESSION['placement'] = $_POST['post-home-placement'];
+        mysqli_close($connect);
         header("Location: ../add-post.php?status=" . $errorCode);
         exit();
     }
@@ -101,7 +120,7 @@
             $imgNewName = rand(10000, 990000) . '_' . time() . '.' . $extention;
             $imgSlug = $folder . $imgNewName;
             if(move_uploaded_file($_FILES[$imgName]['tmp_name'], $imgSlug)) {
-                $imgUrl = "assets/images/posts/" . $imgNewName;
+                $imgUrl = "/assets/images/posts/" . $imgNewName;
             }
             else {
                 formError("error-uploading-" . $imgType . "-image");
