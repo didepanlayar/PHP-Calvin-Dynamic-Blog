@@ -1,5 +1,6 @@
 <?php
 
+$base_url     = "https://calvin.maucode.tk";
 $servername   = "localhost";
 $username     = "username";
 $password     = "password";
