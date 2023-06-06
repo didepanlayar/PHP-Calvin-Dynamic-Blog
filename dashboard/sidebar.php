@@ -5,7 +5,7 @@
                         <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> Posts<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-book"></i> Posts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="posts.php">All Post</a>
