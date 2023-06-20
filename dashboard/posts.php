@@ -91,7 +91,7 @@
                                                         <td><?php echo $post_url; ?></td>
                                                         <td>
                                                             <button class="popup-button" onclick="window.open('../read.php?post=<?php echo $post_url; ?>', '_blank')">View</button>
-                                                            <button class="popup-button" onclick="location.href='includes/edit-post.php?id=<?php echo $post_id; ?>'">Edit</button>
+                                                            <button class="popup-button" onclick="location.href='edit-post.php?id=<?php echo $post_id; ?>'">Edit</button>
                                                             <button class="popup-button" data-toggle="modal" data-target="#delete-<?php echo $post_id; ?>">Delete</button>
                                                         </td>
                                                     </tr>
