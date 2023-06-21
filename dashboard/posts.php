@@ -39,6 +39,11 @@
                             echo "<div class='alert alert-success'><strong>Success!</strong> Post added.</div>";
                         }
                     }
+                    if(isset($_REQUEST['update'])) {
+                        if($_REQUEST['update'] == "success") {
+                            echo "<div class='alert alert-success'><strong>Success!</strong> Post updated.</div>";
+                        }
+                    }
                     if(isset($_REQUEST['remove'])) {
                         if($_REQUEST['remove'] == "success") {
                             echo "<div class='alert alert-success'><strong>Success!</strong> Post deleted.</div>";

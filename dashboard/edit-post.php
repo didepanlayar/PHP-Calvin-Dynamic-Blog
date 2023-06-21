@@ -137,7 +137,8 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form role="form" method="POST" action="includes/update-post.php" enctype="multipart/form-data" onsubmit="return validateImage();">
+                                        <form role="form" method="POST" action="includes/update-post.php" enctype="multipart/form-data">
+                                            <input type="hidden" name="post-id" value="<?php echo $post_id; ?>">
                                             <div class="form-group">
                                                 <label>Title</label>
                                                 <input class="form-control" name="post-title" value="<?php echo $_SESSION['edit-title']; ?>">
@@ -278,50 +279,5 @@
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
     <script src="assets/js/custom-scripts.js"></script>
-    <script>
-        function validateImage() {
-            var mainImage = $("#post-main-image").val();
-            var altImage = $("#post-alt-image").val();
-            var extention = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
-            var getExtMainImage = mainImage.split('.');
-            var getExtAltImage = altImage.split('.');
-            getExtMainImage = getExtMainImage.reverse();
-            getExtAltImage = getExtAltImage.reverse();
-            mainImageCheck = false;
-            altImageCheck = false;
-            if(mainImage.length > 0) {
-                if($.inArray(getExtMainImage[0].toLowerCase(), extention) >= -1) {
-                    mainImageCheck = true;
-                }
-                else {
-                    alert("Error! Main Image. Upload only JPG, JPEG, PNG, GIF and BMP images.");
-                    mainImageCheck = false;
-                }
-            }
-            else {
-                alert("Please upload a Main Image.");
-                mainImageCheck = false;
-            }
-            if(altImage.length > 0) {
-                if($.inArray(getExtAltImage[0].toLowerCase(), extention) >= -1) {
-                    altImageCheck = true;
-                }
-                else {
-                    alert("Error! Alternate Image. Upload only JPG, JPEG, PNG, GIF and BMP images.");
-                    altImageCheck = false;
-                }
-            }
-            else {
-                alert("Please upload a Alternate Image.");
-                altImageCheck = false;
-            }
-            if(mainImageCheck == true && altImageCheck == true) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    </script>
 </body>
 </html>
