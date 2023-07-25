@@ -1,5 +1,6 @@
 <?php
     require "includes/config.php";
+    include "includes/unset-session.php";
     
     // Get Categories
     $sqlCategories = "SELECT * FROM categories";
