@@ -51,6 +51,7 @@
     <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href='assets/library/summernote/summernote.min.css' rel='stylesheet' />
 </head>
 <body>
     <div id="wrapper">
@@ -191,7 +192,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Content</label>
-                                                <textarea class="form-control" rows="3" name="post-content"><?php echo $_SESSION['edit-content']; ?></textarea>
+                                                <textarea class="form-control" id="summernote" rows="3" name="post-content"><?php echo $_SESSION['edit-content']; ?></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Tags</label>
@@ -279,5 +280,16 @@
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
     <script src="assets/js/custom-scripts.js"></script>
+    <script src="assets/library/summernote/summernote.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300,
+                minHeight: null,
+                maxHeight: null,
+                focus: false
+            });
+        });
+    </script>
 </body>
 </html>
