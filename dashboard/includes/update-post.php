@@ -81,7 +81,8 @@
         else {
             $sqlUpdatePost = "UPDATE posts SET category_id = '$category', post_title = '$title', post_meta_title = '$metaTitle', post_url = '$slug', post_summary = '$summary', post_content = '$content', main_image_url = '$mainImgUrl', alt_image_url = '$altImgUrl', post_placement = '$homePlacement', date_updated = '$date', time_updated = '$time' WHERE post_id = '$post_id'";
         }
-        if(mysqli_query($connect, $sqlUpdatePost)) {
+        $sqlUpdateTags = "UPDATE tags SET tag = '$tags' WHERE post_id = '$post_id'";
+        if(mysqli_query($connect, $sqlUpdatePost) && mysqli_query($connect, $sqlUpdateTags)) {
             formSuccess();
         }
         else {

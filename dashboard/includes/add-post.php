@@ -66,17 +66,24 @@
         // Add Post
         $sqlAddPost = "INSERT INTO posts (category_id, post_title, post_meta_title, post_url, post_summary, post_content, main_image_url, alt_image_url, post_placement, post_status, date_created, time_created) VALUES ('$category', '$title', '$metaTitle', '$slug', '$summary', '$content', '$mainImgUrl', '$altImgUrl', '$homePlacement', '1', '$date', '$time')";
         if(mysqli_query($connect, $sqlAddPost)) {
-            mysqli_close($connect);
-            unset($_SESSION['title']);
-            unset($_SESSION['metaTitle']);
-            unset($_SESSION['category']);
-            unset($_SESSION['summary']);
-            unset($_SESSION['content']);
-            unset($_SESSION['tags']);
-            unset($_SESSION['slug']);
-            unset($_SESSION['placement']);
-            header("Location: ../posts.php?status=success");
-            exit();
+            $getPostId = mysqli_insert_id($connect);
+            $sqlAddTags = "INSERT INTO tags (post_id, tag) VALUES ('$getPostId', '$tags')";
+            if(mysqli_query($connect, $sqlAddTags)){
+                mysqli_close($connect);
+                unset($_SESSION['title']);
+                unset($_SESSION['metaTitle']);
+                unset($_SESSION['category']);
+                unset($_SESSION['summary']);
+                unset($_SESSION['content']);
+                unset($_SESSION['tags']);
+                unset($_SESSION['slug']);
+                unset($_SESSION['placement']);
+                header("Location: ../posts.php?status=success");
+                exit();
+            }
+            else {
+                formError("sql-error");
+            }
         }
         else {
             formError("sql-error");
