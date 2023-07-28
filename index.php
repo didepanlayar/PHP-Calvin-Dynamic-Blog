@@ -150,14 +150,77 @@
             </button>
         </div>
     </section>
-    <section class="s-content">
-        <div class="row">
-            <div class="column large-12">
-                <article class="s-content__entry">
-                    <div class="s-content__entry-header">
-                        <h1 class="s-content__title">Home</h1>
+    <section class="s-content s-content--no-top-padding">
+        <div class="s-bricks">
+            <div class="masonry">
+                <div class="bricks-wrapper h-group">
+                    <div class="grid-sizer"></div>
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
-                </article>
+                    <?php
+                        $sqlGetAllPosts = "SELECT * FROM posts WHERE post_status = '1' ORDER BY post_id DESC";
+                        $queryGetAllPosts = mysqli_query($connect, $sqlGetAllPosts);
+                        while ($rowGetAllPosts = mysqli_fetch_assoc($queryGetAllPosts)) {
+                            $postTitle = $rowGetAllPosts['post_title'];
+                            $postSlug = $rowGetAllPosts['post_url'];
+                            $postSummary = $rowGetAllPosts['post_summary'];
+                            $postAltImage = $rowGetAllPosts['alt_image_url'];
+                    ?>
+                            <article class="brick entry" data-aos="fade-up">
+                                <div class="entry__thumb">
+                                    <a href="read.php?post=<?php echo $postSlug; ?>" class="thumb-link">
+                                        <img src="<?php echo $postAltImage; ?>" srcset="<?php echo $postAltImage; ?> 1x, <?php echo $postAltImage; ?>" alt="">
+                                    </a>
+                                </div>
+                                <div class="entry__text">
+                                    <div class="entry__header">
+                                        <h1 class="entry__title"><a href="read.php?post=<?php echo $postSlug; ?>"><?php echo $postTitle; ?></a></h1>
+                                        <div class="entry__meta">
+                                            <span class="byline">By:
+                                                <span class='author'>
+                                                    <a href="#">Di Depan Layar</a>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="entry__excerpt">
+                                        <p><?php echo $postSummary; ?></p>
+                                    </div>
+                                    <a class="entry__more-link" href="read.php?post=<?php echo $postSlug; ?>">Read More</a>
+                                </div>
+                            </article>
+                    <?php
+                        }
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column large-12">
+                    <nav class="pgn">
+                        <ul>
+                            <li>
+                                <span class="pgn__prev" href="#0">
+                                    Prev
+                                </span>
+                            </li>
+                            <li><a class="pgn__num" href="#0">1</a></li>
+                            <li><span class="pgn__num current">2</span></li>
+                            <li><a class="pgn__num" href="#0">3</a></li>
+                            <li><a class="pgn__num" href="#0">4</a></li>
+                            <li><a class="pgn__num" href="#0">5</a></li>
+                            <li><span class="pgn__num dots">…</span></li>
+                            <li><a class="pgn__num" href="#0">8</a></li>
+                            <li>
+                                <span class="pgn__next" href="#0">
+                                    Next
+                                </span>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </section>
