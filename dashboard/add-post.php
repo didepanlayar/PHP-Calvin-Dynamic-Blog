@@ -106,7 +106,7 @@
                                         <form role="form" method="POST" action="includes/add-post.php" enctype="multipart/form-data" onsubmit="return validateImage();">
                                             <div class="form-group">
                                                 <label>Title</label>
-                                                <input class="form-control" name="post-title" value="<?php if(isset($_SESSION['title'])) { echo $_SESSION['title']; } ?>">
+                                                <input class="form-control" name="post-title" id="post-title"  value="<?php if(isset($_SESSION['title'])) { echo $_SESSION['title']; } ?>" onkeyup="createTextSlug()">
                                             </div>
                                             <div class="form-group">
                                                 <label>Meta Title</label>
@@ -160,8 +160,8 @@
                                             <div class="form-group">
                                                 <label>Slug</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon">www.domain.com/</span>
-                                                    <input type="text" class="form-control" name="post-slug" value="<?php if(isset($_SESSION['slug'])) { echo $_SESSION['slug']; } ?>">
+                                                    <span class="input-group-addon"><?php echo $base_url; ?>/</span>
+                                                    <input type="text" class="form-control" name="post-slug" id="post-slug" value="<?php if(isset($_SESSION['slug'])) { echo $_SESSION['slug']; } ?>">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -205,6 +205,20 @@
                 focus: false
             });
         });
+    </script>
+    <script>
+        function createTextSlug() {
+            var title = document.getElementById("post-title").value;
+                        document.getElementById("post-slug").value = generateSlug(title);
+        }
+        function generateSlug(text) {
+            return text.toString().toLowerCase()
+                .replace(/^-+/, '')
+                .replace(/-+$/, '')
+                .replace(/\s+/g, '-')
+                .replace(/\-\-+/g, '-')
+                .replace(/[^\w\-]+/g, '');
+        }
     </script>
     <script>
         function validateImage() {
