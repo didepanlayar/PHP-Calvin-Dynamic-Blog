@@ -1,6 +1,10 @@
+<?php
+    $sqlCategories = "SELECT * FROM categories";
+    $queryCategories = mysqli_query($connect, $sqlCategories);
+?>
     <header class="s-header">
         <div class="s-header__logo">
-            <a class="logo" href="index.php">
+            <a class="logo" href="<?php echo $base_url; ?>">
                 <img src="assets/images/logo.svg" alt="Homepage">
             </a>
         </div>
@@ -8,11 +12,19 @@
             <nav class="s-header__nav-wrap">
                 <h3 class="s-header__nav-heading h6">Navigate to</h3>
                 <ul class="s-header__nav">
-                    <li class="current"><a href="index.php" title="">Home</a></li>
+                    <li class="current"><a href="<?php echo $base_url; ?>" title="">Home</a></li>
                     <li class="has-children">
                         <a href="category.php" title="">Categories</a>
                         <ul class="sub-menu">
-                            <li><a href="category.php">Sub Categories</a></li>
+                            <?php
+                                while ($rowCategories = mysqli_fetch_assoc($queryCategories)) {
+                                    $categoryName = $rowCategories['category_title'];
+                                    $categorySlug = $rowCategories['category_url'];
+                            ?>
+                                    <li><a href="category.php?group=<?php echo $categorySlug; ?>"><?php echo $categoryName; ?></a></li>
+                            <?php
+                                }
+                            ?>
                         </ul>
                     </li>
                     <li><a href="about.php" title="">About</a></li>
