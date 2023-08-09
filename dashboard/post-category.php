@@ -75,7 +75,7 @@
                                         <form role="form" method="POST" action="includes/add-category.php">
                                             <div class="form-group">
                                                 <label>Name</label>
-                                                <input class="form-control" name="category-title">
+                                                <input class="form-control" name="category-title" id="category-title" onkeyup="createTextSlug()">
                                             </div>
                                             <div class="form-group">
                                                 <label>Meta Title</label>
@@ -83,7 +83,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Slug</label>
-                                                <input class="form-control" name="category-slug">
+                                                <input class="form-control" name="category-slug" id="category-slug">
                                             </div>
                                             <button type="submit" class="btn btn-default" name="add-category-button">Add Category</button>
                                         </form>
@@ -141,7 +141,7 @@
                                                                             <input type="hidden" name="category-id" value="<?php echo $id; ?>">
                                                                             <div class="form-group">
                                                                                 <label>Name</label>
-                                                                                <input class="form-control" name="edit-category-title" value="<?php echo $title; ?>">
+                                                                                <input class="form-control" name="edit-category-title" id="edit-category-title" value="<?php echo $title; ?>" onkeyup="createTextSlug()">
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label>Meta Title</label>
@@ -149,7 +149,7 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label>Slug</label>
-                                                                                <input class="form-control" name="edit-category-slug" value="<?php echo $slug; ?>">
+                                                                                <input class="form-control" name="edit-category-slug" id="edit-category-slug" value="<?php echo $slug; ?>">
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -201,5 +201,21 @@
     <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
     <script src="assets/js/morris/morris.js"></script>
     <script src="assets/js/custom-scripts.js"></script>
+    <script>
+        function createTextSlug() {
+            var title = document.getElementById("category-title").value;
+                        document.getElementById("category-slug").value = generateSlug(title);
+            var editTitle = document.getElementById("edit-category-title").value;
+                        document.getElementById("edit-category-slug").value = generateSlug(editTitle);
+        }
+        function generateSlug(text) {
+            return text.toString().toLowerCase()
+                .replace(/^-+/, '')
+                .replace(/-+$/, '')
+                .replace(/\s+/g, '-')
+                .replace(/\-\-+/g, '-')
+                .replace(/[^\w\-]+/g, '');
+        }
+    </script>
 </body>
 </html>
