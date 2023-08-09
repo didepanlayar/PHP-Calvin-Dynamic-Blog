@@ -2,7 +2,7 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a class="active-menu" href="<?php echo $base_url; ?>/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-book"></i> Posts<span class="fa arrow"></span></a>

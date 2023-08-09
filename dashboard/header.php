@@ -6,6 +6,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Calvin CMS</a>
+                <a class="navbar-brand" href="<?php echo $base_url; ?>/dashboard">Calvin CMS</a>
             </div>
         </nav>
