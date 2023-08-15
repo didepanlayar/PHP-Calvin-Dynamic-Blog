@@ -136,6 +136,107 @@
                 </article>
             </div>
         </div>
+        <?php
+            $sqlGetAllComments = "SELECT * FROM comments WHERE post_id = '$postId'";
+            $queryGetAllComments = mysqli_query($connect, $sqlGetAllComments);
+            $numComments = mysqli_num_rows($queryGetAllComments);
+        ?>
+        <div class="comments-wrap">
+            <div id="comments" class="row">
+                <div class="column large-12">
+                    <h3><?php echo $numComments; ?> Comments</h3>
+                    <ol class="commentlist">
+                        <?php
+                            $sqlGetComments = "SELECT * FROM comments WHERE post_id = '$postId' AND comment_parent_id = '0' ORDER BY date_created ASC";
+                            $queryGetComments = mysqli_query($connect, $sqlGetComments);
+                            while ($rowComments = mysqli_fetch_assoc($queryGetComments)) {
+                                $commentId = $rowComments['comment_id'];
+                                $commentAuthor = $rowComments['comment_author'];
+                                $comment = $rowComments['comment'];
+                                $commentDate = $rowComments['date_created'];
+                                $sqlCheckCommentChildren = "SELECT * FROM comments WHERE comment_parent_id = '$commentId' ORDER BY date_created ASC";
+                                $queryCheckCommentChildren = mysqli_query($connect, $sqlCheckCommentChildren);
+                                $numCommentChildren = mysqli_num_rows($queryCheckCommentChildren);
+                                if ($numCommentChildren == 0) {
+                        ?>
+                                    <li class="depth-1 comment">
+                                        <div class="comment__avatar">
+                                            <img class="avatar" src="assets/images/avatar.jpg" alt="" width="50" height="50">
+                                        </div>
+                                        <div class="comment__content">
+                                            <div class="comment__info">
+                                                <input type="hidden" id="comment-author-<?php echo $commentId; ?>" value="<?php echo $commentAuthor; ?>">
+                                                <div class="comment__author"><?php echo $commentAuthor; ?></div>
+                                                <div class="comment__meta">
+                                                    <div class="comment__time"><?php echo date("M j, Y", strtotime($commentDate)); ?></div>
+                                                    <div class="comment__reply">
+                                                        <a class="comment-reply-link" href="#reply-comment-section" onclick="prepareReply('<?php echo $commentId; ?>');">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="comment__text">
+                                            <p><?php echo $comment; ?></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                        <?php
+                                }
+                                else {
+                        ?>
+                                    <li class="thread-alt depth-1 comment">
+                                        <div class="comment__avatar">
+                                            <img class="avatar" src="assets/images/avatar.jpg" alt="" width="50" height="50">
+                                        </div>
+                                        <div class="comment__content">
+                                            <div class="comment__info">
+                                                <input type="hidden" id="comment-author-<?php echo $commentId; ?>" value="<?php echo $commentAuthor; ?>">
+                                                <div class="comment__author"><?php echo $commentAuthor; ?></div>
+                                                <div class="comment__meta">
+                                                    <div class="comment__time"><?php echo date("M j, Y", strtotime($commentDate)); ?></div>
+                                                    <div class="comment__reply">
+                                                        <a class="comment-reply-link" href="#reply-comment-section" onclick="prepareReply('<?php echo $commentId; ?>');">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="comment__text">
+                                            <p><?php echo $comment; ?></p>
+                                            </div>
+                                        </div>
+                        <?php
+                                    while ($rowCommentChildren = mysqli_fetch_assoc($queryCheckCommentChildren)) {
+                                        $commentIdChild = $rowCommentChildren['comment_id'];
+                                        $commentAuthorChild = $rowCommentChildren['comment_author'];
+                                        $commentChild = $rowCommentChildren['comment'];
+                                        $commentDateChild = $rowCommentChildren['date_created'];
+                        ?>
+                                        <ul class="children">
+                                            <li class="depth-2 comment">
+                                                <div class="comment__avatar">
+                                                    <img class="avatar" src="assets/images/avatar.jpg" alt="" width="50" height="50">
+                                                </div>
+                                                <div class="comment__content">
+                                                    <div class="comment__info">
+                                                        <div class="comment__author"><?php echo $commentAuthorChild; ?></div>
+                                                        <div class="comment__meta">
+                                                            <div class="comment__time"><?php echo date("M j, Y", strtotime($commentDateChild)); ?></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment__text">
+                                                        <p><?php echo $commentChild; ?></p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                        <?php
+                                    }
+                                }
+                            }
+                        ?>
+                                    </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </section>
     <?php include "footer.php"; ?>
     <script src="assets/js/jquery-3.5.0.min.js"></script>
