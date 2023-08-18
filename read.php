@@ -145,7 +145,7 @@
             <div id="comments" class="row">
                 <div class="column large-12">
                     <h3><?php echo $numComments; ?> Comments</h3>
-                    <ol class="commentlist">
+                    <ol class="commentlist" id="commentlist">
                         <?php
                             $sqlGetComments = "SELECT * FROM comments WHERE post_id = '$postId' AND comment_parent_id = '0' ORDER BY date_created ASC";
                             $queryGetComments = mysqli_query($connect, $sqlGetComments);
@@ -236,11 +236,99 @@
                     </ol>
                 </div>
             </div>
+            <div class="row comment-respond">
+                <div id="respond" class="column">
+                    <h3>
+                        Add Comment
+                        <span>Your email address will not be published.</span>
+                    </h3>
+                    <p style="color: green; display: none;" id="comment-success">Your comment was added successfully.</p>
+                    <p style="color: red; display: none;" id="comment-error"></p>
+                    <form name="commentForm" id="commentForm">
+                        <fieldset>
+                            <input type="hidden" name="postId" id="postId" value="<?php echo $postId; ?>">
+                            <div class="form-field">
+                                <input name="cName" id="cName" class="h-full-width h-remove-bottom" placeholder="Your Name" value="" type="text">
+                            </div>
+                            <div class="form-field">
+                                <input name="cEmail" id="cEmail" class="h-full-width h-remove-bottom" placeholder="Your Email" value="" type="text">
+                            </div>
+                            <div class="message form-field">
+                                <textarea name="cMessage" id="cMessage" class="h-full-width" placeholder="Your Message"></textarea>
+                            </div>
+                            <br>
+                            <input name="submit" id="submitCommentForm" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
     <?php include "footer.php"; ?>
     <script src="assets/js/jquery-3.5.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            prepareComment();
+        });
+        function checkEmail(email) {
+            var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!regex.test(email)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        function prepareComment() {
+            $("#comment-success").css("display", "none");
+            $("#comment-error").css("display", "none");
+            $("#reply-comment-section").hide();
+            $("#add-comment-section").show();
+        }
+        $(document).on('submit', '#commentForm', function(e) {
+            e.preventDefault();
+            $("#comment-success").css("display", "none");
+            $("#comment-error").css("display", "none");
+            var name = $("#cName").val();
+            var email = $("#cEmail").val();
+            var comment = $("#cMessage").val();
+            if (!name || !email || !comment) {
+                $("#comment-error").css("display", "block");
+                $("#comment-error").html("Please fill all fields.");
+            } else if (name.lenght > 50) {
+                $("#comment-error").css("display", "block");
+                $("#comment-error").html("Name max 50 characters.");
+            } else if (comment.lenght > 500) {
+                $("#comment-error").css("display", "block");
+                $("#comment-error").html("Message max 500 characters.");
+            } else if (checkEmail(email) == false) {
+                $("#comment-error").css("display", "block");
+                $("#comment-error").html("Please enter a valid email address.");
+            } else {
+                var date = new Date();
+                var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                var dateFormated = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+                $.ajax({
+                    method: "POST",
+                    url: "includes/add-comment.php",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        if (data == "success") {
+                            var newComment = "<li class='depth-1 comment'><div class='comment__avatar'><img class='avatar' src='assets/images/avatar.jpg' alt='' width='50' height='50'></div><div class='comment__content'><div class='comment__info'><div class='comment__author'>" + name + "</div><div class='comment__meta'><div class='comment__time'>" + dateFormated + "</div></div></div><div class='comment__text'><p>" + comment + "</p></div></div></li>";
+                            $("#comment-success").css("display", "block");
+                            $("#commentlist").append(newComment);
+                            $("#commentForm").hide();
+                        } else {
+                            $("#comment-error").css("display", "block");
+                            $("#comment-error").html("Error! Please try again later.");
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
