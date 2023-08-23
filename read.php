@@ -236,14 +236,14 @@
                     </ol>
                 </div>
             </div>
-            <div class="row comment-respond">
+            <div class="row comment-respond" id="add-comment-section">
                 <div id="respond" class="column">
                     <h3>
                         Add Comment
                         <span>Your email address will not be published.</span>
                     </h3>
-                    <p style="color: green; display: none;" id="comment-success">Your comment was added successfully.</p>
-                    <p style="color: red; display: none;" id="comment-error"></p>
+                    <p style="color: green; text-align: center; display: none;" id="comment-success">Your comment was added successfully.</p>
+                    <p style="color: text-align: center; red; display: none;" id="comment-error"></p>
                     <form name="commentForm" id="commentForm">
                         <fieldset>
                             <input type="hidden" name="postId" id="postId" value="<?php echo $postId; ?>">
@@ -258,6 +258,31 @@
                             </div>
                             <br>
                             <input name="submit" id="submitCommentForm" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="row comment-respond" id="reply-comment-section">
+                <div id="respond" class="column">
+                    <h3 id="reply-h3"></h3>
+                    <p style="color: green; text-align: center; display: none;" id="reply-success">Your reply was added successfully.</p>
+                    <p style="color: red; text-align: center; display: none;" id="reply-error"></p>
+                    <form name="replyForm" id="replyForm">
+                        <fieldset>
+                            <input type="hidden" name="replyPostId" id="replyPostId" value="<?php echo $postId; ?>">
+                            <input type="hidden" name="commentParentId" id="commentParentId" value="">
+                            <div class="form-field">
+                                <input name="replyCName" id="replyCName" class="h-full-width h-remove-bottom" placeholder="Your Name" value="" type="text">
+                            </div>
+                            <div class="form-field">
+                                <input name="replyCEmail" id="replyCEmail" class="h-full-width h-remove-bottom" placeholder="Your Email" value="" type="text">
+                            </div>
+                            <div class="message form-field">
+                                <textarea name="replyCMessage" id="replyCMessage" class="h-full-width" placeholder="Your Message"></textarea>
+                            </div>
+                            <br>
+                            <input name="submit" id="submitReplyForm" class="btn btn--primary btn-wide btn--large h-full-width" value="Reply" type="submit">
+                            <input name="submit" id="addComment" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" onclick="prepareComment();">
                         </fieldset>
                     </form>
                 </div>
@@ -324,6 +349,58 @@
                         } else {
                             $("#comment-error").css("display", "block");
                             $("#comment-error").html("Error! Please try again later.");
+                        }
+                    }
+                });
+            }
+        });
+        function prepareReply(commentId) {
+            $("#comment-success").css("display", "none");
+            $("#comment-error").css("display", "none");
+            $("#reply-comment-section").show();
+            $("#add-comment-section").hide();
+            var authorName = $("#comment-author-" + commentId).val();
+            $("#reply-h3").html("Reply to: " + authorName);
+            $("#commentParentId").val(commentId);
+        }
+        $(document).on('submit', '#replyForm', function(e) {
+            e.preventDefault();
+            $("#reply-success").css("display", "none");
+            $("#reply-error").css("display", "none");
+            var name = $("#replyCName").val();
+            var email = $("#replyCEmail").val();
+            var reply = $("#replyCMessage").val();
+            var parentId = $("#commentParentId").val();
+            if (!name || !email || !reply) {
+                $("#reply-error").css("display", "block");
+                $("#reply-error").html("Please fill all fields.");
+            } else if (name.lenght > 50) {
+                $("#reply-error").css("display", "block");
+                $("#reply-error").html("Name max 50 characters.");
+            } else if (reply.lenght > 500) {
+                $("#reply-error").css("display", "block");
+                $("#reply-error").html("Message max 500 characters.");
+            } else if (checkEmail(email) == false) {
+                $("#reply-error").css("display", "block");
+                $("#reply-error").html("Please enter a valid email address.");
+            } else if (!parentId) {
+                $("#reply-error").css("display", "block");
+                $("#reply-error").html("Error! Please refresh the page.");
+            } else {
+                var date = new Date();
+                var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                var dateFormated = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+                $.ajax({
+                    method: "POST",
+                    url: "includes/add-reply.php",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        if (data == "success") {
+                            $("#reply-success").css("display", "block");
+                            $("#replyForm").hide();
+                        } else {
+                            $("#reply-error").css("display", "block");
+                            $("#reply-error").html("Error! Please try again later.");
                         }
                     }
                 });
